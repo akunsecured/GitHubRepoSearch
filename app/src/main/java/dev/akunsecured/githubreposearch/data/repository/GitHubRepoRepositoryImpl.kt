@@ -3,8 +3,9 @@ package dev.akunsecured.githubreposearch.data.repository
 import dev.akunsecured.githubreposearch.data.remote.GitHubApi
 import dev.akunsecured.githubreposearch.data.remote.dto.RepoDto
 import dev.akunsecured.githubreposearch.domain.repository.GitHubRepoRepository
+import javax.inject.Inject
 
-class GitHubRepoRepositoryImpl constructor(
+class GitHubRepoRepositoryImpl @Inject constructor(
     private val api: GitHubApi
 ) : GitHubRepoRepository {
 
