@@ -1,8 +1,10 @@
 package dev.akunsecured.githubreposearch.domain.repository
 
-import dev.akunsecured.githubreposearch.data.remote.dto.RepoDto
+import androidx.paging.PagingData
+import dev.akunsecured.githubreposearch.domain.model.Repo
+import kotlinx.coroutines.flow.Flow
 
 interface GitHubRepoRepository {
 
-    suspend fun getRepos(text: String, page: Int): List<RepoDto>
+    suspend fun getRepos(text: String): Flow<PagingData<Repo>>
 }

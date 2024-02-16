@@ -7,6 +7,8 @@ object Constants {
 
     const val BASE_URL = "https://api.github.com/"
 
+    const val MAX_PAGE_SIZE = 100
+
     @SuppressLint("SimpleDateFormat")
     val FORMATTER = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
 

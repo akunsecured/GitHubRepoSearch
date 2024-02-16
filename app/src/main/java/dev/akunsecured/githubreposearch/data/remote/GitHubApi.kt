@@ -9,6 +9,7 @@ interface GitHubApi {
     @GET("/search/repositories")
     suspend fun searchRepositories(
         @Query("q") text: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int = 30,
     ): RepoSearchResult
 }

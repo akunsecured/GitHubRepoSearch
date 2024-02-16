@@ -1,14 +1,17 @@
 package dev.akunsecured.githubreposearch.presentation.repo_list
 
-import androidx.compose.runtime.State
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.akunsecured.githubreposearch.common.Resource
+import dev.akunsecured.githubreposearch.domain.model.Repo
 import dev.akunsecured.githubreposearch.domain.use_case.search_repos.SearchReposUseCase
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,25 +19,42 @@ class RepoListViewModel @Inject constructor(
     private val searchReposUseCase: SearchReposUseCase
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(RepoListState())
-    val state: State<RepoListState> = _state
+    private val _state: MutableStateFlow<PagingData<Repo>> =
+        MutableStateFlow(value = PagingData.empty())
+    val state: MutableStateFlow<PagingData<Repo>> get() = _state
 
-    fun searchRepos(text: String) {
-        searchReposUseCase(text = text, page = 1).onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _state.value = RepoListState(repositories = result.data ?: emptyList())
-                }
+    private val _searchState = mutableStateOf<RepoListState>(RepoListState.Initial)
+    val searchState: MutableState<RepoListState> get() = _searchState
 
-                is Resource.Loading -> {
-                    _state.value = RepoListState(isLoading = true)
-                }
+    fun onEvent(event: RepoListEvent) {
+        _searchState.value = RepoListState.Searched
 
-                is Resource.Error -> {
-                    _state.value =
-                        RepoListState(error = result.message ?: "An unexpected error occurred")
+        viewModelScope.launch {
+            when (event) {
+                is RepoListEvent.SearchRepo -> {
+                    searchRepos(text = event.text)
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
+
+    private suspend fun searchRepos(text: String) {
+        searchReposUseCase(text = text)
+            .distinctUntilChanged()
+            .cachedIn(viewModelScope)
+            .collect {
+                _state.value = it
+            }
+    }
+}
+
+sealed class RepoListEvent {
+
+    data class SearchRepo(val text: String) : RepoListEvent()
+}
+
+sealed class RepoListState {
+
+    data object Initial : RepoListState()
+    data object Searched : RepoListState()
 }
