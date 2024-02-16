@@ -3,22 +3,20 @@ package dev.akunsecured.githubreposearch.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
+import dagger.hilt.android.AndroidEntryPoint
+import dev.akunsecured.githubreposearch.presentation.repo_list.RepoListScreen
 import dev.akunsecured.githubreposearch.presentation.ui.theme.GitHubRepoSearchTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             GitHubRepoSearchTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-
+                Surface(color = MaterialTheme.colorScheme.background) {
+                    RepoListScreen()
                 }
             }
         }

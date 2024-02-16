@@ -9,4 +9,7 @@ object Constants {
 
     @SuppressLint("SimpleDateFormat")
     val FORMATTER = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+    @SuppressLint("SimpleDateFormat")
+    val DISPLAY_DATA_FORMATTER = SimpleDateFormat("yyyy.MM.dd HH:mm")
 }

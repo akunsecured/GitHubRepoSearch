@@ -151,5 +151,6 @@ fun RepoDto.toRepo() = Repo(
     stargazersCount = stargazersCount,
     forksCount = forksCount,
     createdAt = Constants.FORMATTER.parse(createdAt)!!,
-    updatedAt = Constants.FORMATTER.parse(updatedAt)!!
+    updatedAt = Constants.FORMATTER.parse(updatedAt)!!,
+    owner = owner.toOwner(),
 )
