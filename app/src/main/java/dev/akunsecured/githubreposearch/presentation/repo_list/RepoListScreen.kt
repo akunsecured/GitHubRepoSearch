@@ -20,7 +20,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import dev.akunsecured.githubreposearch.domain.model.Repo
+import dev.akunsecured.githubreposearch.presentation.destinations.RepoDetailScreenDestination
 import dev.akunsecured.githubreposearch.presentation.repo_list.components.RepoListItem
 import dev.akunsecured.githubreposearch.presentation.repo_list.components.RepoSearchTextField
 import dev.akunsecured.githubreposearch.presentation.util.ErrorMessage
@@ -28,8 +32,11 @@ import dev.akunsecured.githubreposearch.presentation.util.LoadingNextPageItem
 import dev.akunsecured.githubreposearch.presentation.util.PageLoader
 
 @OptIn(ExperimentalComposeUiApi::class)
+@RootNavGraph(start = true)
+@Destination
 @Composable
 fun RepoListScreen(
+    navigator: DestinationsNavigator,
     viewModel: RepoListViewModel = hiltViewModel()
 ) {
     val repoPagingItems: LazyPagingItems<Repo> = viewModel.state.collectAsLazyPagingItems()
@@ -62,7 +69,7 @@ fun RepoListScreen(
                 RepoListItem(
                     repo = repoPagingItems[index]!!,
                     onItemClick = {
-                        // TODO: implement navigation
+                        navigator.navigate(RepoDetailScreenDestination(repo = it))
                     }
                 )
             }
