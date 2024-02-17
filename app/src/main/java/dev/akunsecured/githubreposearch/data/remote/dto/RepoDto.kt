@@ -146,6 +146,7 @@ data class RepoDto(
 fun RepoDto.toRepo() = Repo(
     id = id,
     name = name,
+    fullName = fullName,
     description = description,
     htmlUrl = htmlUrl,
     stargazersCount = stargazersCount,

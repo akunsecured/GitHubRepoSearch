@@ -6,6 +6,7 @@ import java.util.Date
 data class Repo(
     val id: Int,
     val name: String,
+    val fullName: String,
     val description: String?,
     val htmlUrl: String,
     val stargazersCount: Int,
