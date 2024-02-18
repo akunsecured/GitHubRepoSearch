@@ -1,4 +1,4 @@
-package dev.akunsecured.githubreposearch.ui.theme
+package dev.akunsecured.githubreposearch.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
